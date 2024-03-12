@@ -1,4 +1,6 @@
 #ifdef _WIN32
+
+#pragma comment( lib, "advapi32.lib" )
 /**********************************************************************
  *
  * StackWalker.cpp
@@ -1158,7 +1160,15 @@ BOOL StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
     s.AddrStack.Offset = c.Sp;
     s.AddrStack.Mode = AddrModeFlat;
     #else
-#error "Platform not supported!"
+    imageType = IMAGE_FILE_MACHINE_I386;
+    s.AddrPC.Offset = c.Pc;
+    s.AddrPC.Mode = AddrModeFlat;
+    s.AddrFrame.Offset = c.Sp;
+    s.AddrFrame.Mode = AddrModeFlat;
+    s.AddrStack.Offset = c.Sp;
+    s.AddrStack.Mode = AddrModeFlat;
+//    #else
+//#error "Platform not supported!"
     #endif
 
     pSym = (IMAGEHLP_SYMBOL64 *) malloc(sizeof(IMAGEHLP_SYMBOL64) + STACKWALK_MAX_NAMELEN);
@@ -1410,9 +1420,9 @@ void StackWalker::OnSymInit(LPCSTR szSearchPath, DWORD symOptions, LPCSTR szUser
     if(GetVersionExA(&ver) != FALSE)
     {
         sprintf_s(buffer, STACKWALK_MAX_NAMELEN, "OS-Version: %ld.%ld.%ld (%s)\n",
-                  (long)ver.dwMajorVersion,
-                  (long)ver.dwMinorVersion,
-                  (long)ver.dwBuildNumber,
+                  (int32_t)ver.dwMajorVersion,
+                  (int32_t)ver.dwMinorVersion,
+                  (int32_t)ver.dwBuildNumber,
                   ver.szCSDVersion);
         ansi2utf8(buffer, STACKWALK_MAX_NAMELEN);
         OnOutput(buffer);
