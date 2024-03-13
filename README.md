@@ -14,7 +14,7 @@ This is a direct continuation of the SMBX 1.3 engine. Originally it was written 
 
 
 ## ARM32 Port for Windows RT
-This fork of TheXTech has been slightly modified to be able to be compiled for windows arm32 devices like the microsoft surface rt.
+This fork of TheXTech has been slightly modified to be able to be compiled for windows arm32 devices like the Microsoft Surface RT.
 
 
 ## How do I run this?
